@@ -19,8 +19,8 @@ const connection = new Connection(SOLANA_RPC!, {
   commitment: "confirmed",
 });
 
-// Program setup (matching your API)
-export const program = new Program(IDL, { connection });
+// Program setup
+const program = new Program(IDL, { connection });
 
 // Postgres setup
 const pool = new Pool({
@@ -40,37 +40,64 @@ async function startEventListener() {
     process.exit(1);
   }
 
-  // Event: FundsDeposited (escrow funded)
-  program.addEventListener("FundsDeposited", async (event: any, slot: number) => {
-    console.log("FundsDeposited event detected at slot", slot, event);
-    const { escrowAccount, tradeId, amount, sellerAddress, buyerAddress } = event;
+  // Event: EscrowCreated
+  program.addEventListener("EscrowCreated", async (event: any, slot: number) => {
+    console.log("EscrowCreated event detected at slot", slot, event);
+    const { objectId, escrowId, tradeId, seller, buyer, amount, sequential, sequentialEscrowAddress } = event;
 
     try {
       await pool.query(
         `
         INSERT INTO escrows (
-          trade_id, escrow_address, seller_address, buyer_address, token_type, amount, status, deposit_timestamp, sequential
+          trade_id, escrow_address, seller_address, buyer_address, token_type, amount, status, sequential, sequential_escrow_address, created_at
         )
-        VALUES ($1, $2, $3, $4, 'USDC', $5, 'FUNDED', NOW(), false)
+        VALUES ($1, $2, $3, $4, 'USDC', $5, 'CREATED', $6, $7, NOW())
         ON CONFLICT (escrow_address)
-        DO UPDATE SET
-          status = 'FUNDED',
-          deposit_timestamp = NOW(),
-          amount = EXCLUDED.amount,
-          updated_at = NOW()
+        DO NOTHING
         `,
-        [tradeId, escrowAccount.toBase58(), sellerAddress.toBase58(), buyerAddress.toBase58(), amount]
+        [
+          tradeId.toString(), // u64 to string for Postgres
+          objectId.toBase58(),
+          seller.toBase58(),
+          buyer.toBase58(),
+          amount.toString(), // u64 to string
+          sequential,
+          sequentialEscrowAddress ? sequentialEscrowAddress.toBase58() : null,
+        ]
       );
-      console.log(`Updated escrow ${escrowAccount.toBase58()} for trade ${tradeId}: FUNDED`);
+      console.log(`Inserted escrow ${objectId.toBase58()} for trade ${tradeId}: CREATED`);
+    } catch (err) {
+      console.error(`Failed to insert escrow for trade ${tradeId}:`, err);
+    }
+  });
+
+  // Event: FundsDeposited
+  program.addEventListener("FundsDeposited", async (event: any, slot: number) => {
+    console.log("FundsDeposited event detected at slot", slot, event);
+    const { objectId, tradeId, amount } = event;
+
+    try {
+      await pool.query(
+        `
+        UPDATE escrows
+        SET status = 'FUNDED',
+            deposit_timestamp = NOW(),
+            amount = $3,
+            updated_at = NOW()
+        WHERE escrow_address = $1 AND trade_id = $2
+        `,
+        [objectId.toBase58(), tradeId.toString(), amount.toString()]
+      );
+      console.log(`Updated escrow ${objectId.toBase58()} for trade ${tradeId}: FUNDED`);
     } catch (err) {
       console.error(`Failed to update escrow for trade ${tradeId}:`, err);
     }
   });
 
-  // Event: FundsReleased (escrow released)
-  program.addEventListener("FundsReleased", async (event: any, slot: number) => {
-    console.log("FundsReleased event detected at slot", slot, event);
-    const { escrowAccount, tradeId } = event;
+  // Event: EscrowReleased
+  program.addEventListener("EscrowReleased", async (event: any, slot: number) => {
+    console.log("EscrowReleased event detected at slot", slot, event);
+    const { objectId, tradeId } = event;
 
     try {
       // Update escrow status
@@ -81,7 +108,7 @@ async function startEventListener() {
             updated_at = NOW()
         WHERE escrow_address = $1 AND trade_id = $2
         `,
-        [escrowAccount.toBase58(), tradeId]
+        [objectId.toBase58(), tradeId.toString()]
       );
 
       // Update trade leg1 or leg2 based on escrow_address match
@@ -101,9 +128,49 @@ async function startEventListener() {
             END
         WHERE id = $2
         `,
-        [escrowAccount.toBase58(), tradeId]
+        [objectId.toBase58(), tradeId.toString()]
       );
       console.log(`Updated escrow and trade ${tradeId}: RELEASED/COMPLETED`);
+    } catch (err) {
+      console.error(`Failed to update escrow/trade ${tradeId}:`, err);
+    }
+  });
+
+  // Event: EscrowCancelled
+  program.addEventListener("EscrowCancelled", async (event: any, slot: number) => {
+    console.log("EscrowCancelled event detected at slot", slot, event);
+    const { objectId, tradeId } = event;
+
+    try {
+      await pool.query(
+        `
+        UPDATE escrows
+        SET status = 'CANCELLED',
+            updated_at = NOW()
+        WHERE escrow_address = $1 AND trade_id = $2
+        `,
+        [objectId.toBase58(), tradeId.toString()]
+      );
+
+      await pool.query(
+        `
+        UPDATE trades
+        SET leg1_state = CASE WHEN leg1_escrow_address = $1 THEN 'CANCELLED' ELSE leg1_state END,
+            leg1_cancelled_at = CASE WHEN leg1_escrow_address = $1 THEN NOW() ELSE leg1_cancelled_at END,
+            leg2_state = CASE WHEN leg2_escrow_address = $1 THEN 'CANCELLED' ELSE leg2_state END,
+            leg2_cancelled_at = CASE WHEN leg2_escrow_address = $1 THEN NOW() ELSE leg2_cancelled_at END,
+            overall_status = CASE 
+              WHEN (leg1_escrow_address = $1 AND leg2_escrow_address IS NULL) OR 
+                   (leg1_escrow_address = $1 AND leg2_state IN ('COMPLETED', 'CANCELLED')) OR 
+                   (leg2_escrow_address = $1 AND leg1_state IN ('COMPLETED', 'CANCELLED'))
+              THEN 'CANCELLED'
+              ELSE overall_status 
+            END
+        WHERE id = $2
+        `,
+        [objectId.toBase58(), tradeId.toString()]
+      );
+      console.log(`Updated escrow and trade ${tradeId}: CANCELLED`);
     } catch (err) {
       console.error(`Failed to update escrow/trade ${tradeId}:`, err);
     }
