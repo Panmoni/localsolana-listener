@@ -1,0 +1,2077 @@
+{
+  "address": "4PonUp1nPEzDPnRMPjTqufLT3f37QuBJGk1CVnsTXx7x",
+  "metadata": {
+    "name": "localsolana_contracts",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "auto_cancel",
+      "discriminator": [
+        83,
+        161,
+        99,
+        154,
+        167,
+        3,
+        133,
+        159
+      ],
+      "accounts": [
+        {
+          "name": "arbitrator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true,
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_token_account",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel_escrow",
+      "discriminator": [
+        156,
+        203,
+        54,
+        179,
+        38,
+        72,
+        33,
+        21
+      ],
+      "accounts": [
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true,
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_token_account",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_escrow",
+      "discriminator": [
+        253,
+        215,
+        165,
+        116,
+        36,
+        108,
+        68,
+        80
+      ],
+      "accounts": [
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buyer"
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "escrow_id"
+              },
+              {
+                "kind": "arg",
+                "path": "trade_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "escrow_id",
+          "type": "u64"
+        },
+        {
+          "name": "trade_id",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "sequential",
+          "type": "bool"
+        },
+        {
+          "name": "sequential_escrow_address",
+          "type": {
+            "option": "pubkey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "default_judgment",
+      "discriminator": [
+        103,
+        255,
+        235,
+        98,
+        158,
+        165,
+        125,
+        75
+      ],
+      "accounts": [
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "arbitrator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buyer_token_account",
+          "writable": true
+        },
+        {
+          "name": "seller_token_account",
+          "writable": true
+        },
+        {
+          "name": "buyer_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  121,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  108,
+                  108,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fund_escrow",
+      "discriminator": [
+        155,
+        18,
+        218,
+        141,
+        182,
+        213,
+        69,
+        201
+      ],
+      "accounts": [
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_token_account",
+          "writable": true
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_buyer_bond_account",
+      "discriminator": [
+        33,
+        161,
+        142,
+        133,
+        182,
+        160,
+        195,
+        90
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "escrow_id"
+              },
+              {
+                "kind": "arg",
+                "path": "trade_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buyer_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  121,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_escrow_id",
+          "type": "u64"
+        },
+        {
+          "name": "_trade_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize_seller_bond_account",
+      "discriminator": [
+        164,
+        116,
+        173,
+        16,
+        54,
+        62,
+        16,
+        194
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "escrow_id"
+              },
+              {
+                "kind": "arg",
+                "path": "trade_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  108,
+                  108,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_escrow_id",
+          "type": "u64"
+        },
+        {
+          "name": "_trade_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "mark_fiat_paid",
+      "discriminator": [
+        147,
+        155,
+        78,
+        133,
+        158,
+        150,
+        89,
+        70
+      ],
+      "accounts": [
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open_dispute_with_bond",
+      "discriminator": [
+        107,
+        47,
+        12,
+        245,
+        112,
+        23,
+        5,
+        85
+      ],
+      "accounts": [
+        {
+          "name": "disputing_party",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "disputing_party_token_account",
+          "writable": true
+        },
+        {
+          "name": "buyer_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  121,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  108,
+                  108,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "evidence_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "release_escrow",
+      "discriminator": [
+        146,
+        253,
+        129,
+        233,
+        20,
+        145,
+        181,
+        206
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buyer_token_account",
+          "writable": true
+        },
+        {
+          "name": "arbitrator_token_account",
+          "writable": true
+        },
+        {
+          "name": "sequential_escrow_token_account",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "resolve_dispute_with_explanation",
+      "discriminator": [
+        189,
+        74,
+        181,
+        226,
+        179,
+        199,
+        201,
+        192
+      ],
+      "accounts": [
+        {
+          "name": "arbitrator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buyer_token_account",
+          "writable": true
+        },
+        {
+          "name": "seller_token_account",
+          "writable": true
+        },
+        {
+          "name": "arbitrator_token_account",
+          "writable": true
+        },
+        {
+          "name": "buyer_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  121,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  108,
+                  108,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "decision",
+          "type": "bool"
+        },
+        {
+          "name": "resolution_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "respond_to_dispute_with_bond",
+      "discriminator": [
+        228,
+        27,
+        214,
+        143,
+        75,
+        31,
+        29,
+        212
+      ],
+      "accounts": [
+        {
+          "name": "responding_party",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "responding_party_token_account",
+          "writable": true
+        },
+        {
+          "name": "buyer_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  121,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_bond_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  108,
+                  108,
+                  101,
+                  114,
+                  95,
+                  98,
+                  111,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "evidence_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "update_sequential_address",
+      "discriminator": [
+        11,
+        3,
+        89,
+        53,
+        111,
+        178,
+        25,
+        158
+      ],
+      "accounts": [
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.escrow_id",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.trade_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_address",
+          "type": "pubkey"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Escrow",
+      "discriminator": [
+        31,
+        213,
+        123,
+        187,
+        186,
+        22,
+        218,
+        155
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "DisputeDefaultJudgment",
+      "discriminator": [
+        194,
+        12,
+        130,
+        224,
+        60,
+        204,
+        39,
+        194
+      ]
+    },
+    {
+      "name": "DisputeOpened",
+      "discriminator": [
+        239,
+        222,
+        102,
+        235,
+        193,
+        85,
+        1,
+        214
+      ]
+    },
+    {
+      "name": "DisputeResolved",
+      "discriminator": [
+        121,
+        64,
+        249,
+        153,
+        139,
+        128,
+        236,
+        187
+      ]
+    },
+    {
+      "name": "DisputeResponseSubmitted",
+      "discriminator": [
+        22,
+        179,
+        0,
+        219,
+        181,
+        109,
+        45,
+        5
+      ]
+    },
+    {
+      "name": "EscrowCancelled",
+      "discriminator": [
+        98,
+        241,
+        195,
+        122,
+        213,
+        0,
+        162,
+        161
+      ]
+    },
+    {
+      "name": "EscrowCreated",
+      "discriminator": [
+        70,
+        127,
+        105,
+        102,
+        92,
+        97,
+        7,
+        173
+      ]
+    },
+    {
+      "name": "EscrowReleased",
+      "discriminator": [
+        131,
+        7,
+        138,
+        104,
+        166,
+        190,
+        113,
+        112
+      ]
+    },
+    {
+      "name": "FiatMarkedPaid",
+      "discriminator": [
+        38,
+        159,
+        7,
+        17,
+        32,
+        79,
+        143,
+        184
+      ]
+    },
+    {
+      "name": "FundsDeposited",
+      "discriminator": [
+        157,
+        209,
+        100,
+        95,
+        59,
+        100,
+        3,
+        68
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount: Zero or negative"
+    },
+    {
+      "code": 6001,
+      "name": "ExceedsMaximum",
+      "msg": "Amount exceeds maximum (100 USDC)"
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized caller"
+    },
+    {
+      "code": 6003,
+      "name": "DepositDeadlineExpired",
+      "msg": "Deposit deadline expired"
+    },
+    {
+      "code": 6004,
+      "name": "FiatDeadlineExpired",
+      "msg": "Fiat payment deadline expired"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidState",
+      "msg": "Invalid state transition"
+    },
+    {
+      "code": 6006,
+      "name": "MissingSequentialAddress",
+      "msg": "Missing sequential escrow address"
+    },
+    {
+      "code": 6007,
+      "name": "TerminalState",
+      "msg": "Already in terminal state"
+    },
+    {
+      "code": 6008,
+      "name": "FeeCalculationError",
+      "msg": "Fee calculation error"
+    },
+    {
+      "code": 6009,
+      "name": "InsufficientFunds",
+      "msg": "Insufficient funds to cover principal and fee"
+    },
+    {
+      "code": 6010,
+      "name": "IncorrectBondAmount",
+      "msg": "Dispute bond amount incorrect"
+    },
+    {
+      "code": 6011,
+      "name": "ResponseDeadlineExpired",
+      "msg": "Dispute response deadline expired"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidEvidenceHash",
+      "msg": "Evidence hash missing or invalid"
+    },
+    {
+      "code": 6013,
+      "name": "DuplicateEvidence",
+      "msg": "Duplicate evidence submission"
+    },
+    {
+      "code": 6014,
+      "name": "ArbitrationDeadlineExpired",
+      "msg": "Arbitration deadline expired"
+    },
+    {
+      "code": 6015,
+      "name": "MissingDisputeBond",
+      "msg": "Missing dispute bond"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidResolutionExplanation",
+      "msg": "Invalid resolution explanation"
+    },
+    {
+      "code": 6017,
+      "name": "BumpNotFound",
+      "msg": "Required bump seed not found"
+    }
+  ],
+  "types": [
+    {
+      "name": "DisputeDefaultJudgment",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "defaulting_party",
+            "type": "pubkey"
+          },
+          {
+            "name": "decision",
+            "type": "bool"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeOpened",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "disputing_party",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "evidence_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bond_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeResolved",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "decision",
+            "type": "bool"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "counter",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "resolution_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "winner",
+            "type": "pubkey"
+          },
+          {
+            "name": "explanation_reference",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeResponseSubmitted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "responding_party",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "evidence_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bond_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Escrow",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "arbitrator",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "deposit_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "fiat_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": {
+                "name": "EscrowState"
+              }
+            }
+          },
+          {
+            "name": "sequential",
+            "type": "bool"
+          },
+          {
+            "name": "sequential_escrow_address",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "fiat_paid",
+            "type": "bool"
+          },
+          {
+            "name": "counter",
+            "type": "u64"
+          },
+          {
+            "name": "dispute_initiator",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "dispute_initiated_time",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "dispute_evidence_hash_buyer",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          },
+          {
+            "name": "dispute_evidence_hash_seller",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          },
+          {
+            "name": "dispute_resolution_hash",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowCancelled",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "counter",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "arbitrator",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "deposit_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "fiat_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "sequential",
+            "type": "bool"
+          },
+          {
+            "name": "sequential_escrow_address",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowReleased",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "counter",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "destination",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "Funded"
+          },
+          {
+            "name": "Released"
+          },
+          {
+            "name": "Cancelled"
+          },
+          {
+            "name": "Disputed"
+          },
+          {
+            "name": "Resolved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FiatMarkedPaid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FundsDeposited",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "object_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          },
+          {
+            "name": "trade_id",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "counter",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}
